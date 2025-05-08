@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Basic Math Calculator</title>
+    <style>
+        h1 {
+            color: #FFFFFF;
+            font-family: system-ui;
+            margin-left: 20px;
+        }
+        body {
+            background-color: #222629;
+        }
+        label {
+            color: #86C232;
+            font-family: system-ui;
+            font-size: 20px;
+            margin-left: 20px;
+            margin-top: 20px;
+            display: inline-block;
+        }
+        select, input {
+            font-family: system-ui;
+            font-size: 20px;
+            margin-left: 10px;
+            margin-top: 20px;
+            width: 120px;
+        }
+        button {
+            background-color: #86C232;
+            border-color: #86C232;
+            color: #FFFFFF;
+            font-family: system-ui;
+            font-size: 20px;
+            font-weight: bold;
+            margin-left: 30px;
+            margin-top: 20px;
+            width: 140px;
+        }
+    </style>
+    <script>
+        const callAPI = (num1, num2, operation) => {
+            const myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+
+            const raw = JSON.stringify({
+                "num1": parseFloat(num1),
+                "num2": parseFloat(num2),
+                "operation": operation
+            });
+
+            const requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            };
+
+            fetch("YOUR_API_GATEWAY_ENDPOINT", requestOptions)
+                .then(response => response.text())
+                .then(result => alert("Result: " + JSON.parse(result).body))
+                .catch(error => console.log('error', error));
+        }
+    </script>
+</head>
+<body>
+    <h1>BASIC MATH CALCULATOR</h1>
+    <form>
+        <label>First number:</label>
+        <input type="text" id="num1">
+        
+        <label>Second number:</label>
+        <input type="text" id="num2">
+
+        <label>Operation:</label>
+        <select id="operation">
+            <option value="add">Addition (+)</option>
+            <option value="subtract">Subtraction (-)</option>
+            <option value="multiply">Multiplication (×)</option>
+            <option value="divide">Division (÷)</option>
+            <option value="power">Power (^)</option>
+        </select>
+
+        <button type="button" onclick="callAPI(
+            document.getElementById('num1').value,
+            document.getElementById('num2').value,
+            document.getElementById('operation').value
+        )">CALCULATE</button>
+    </form>
+</body>
+</html>
